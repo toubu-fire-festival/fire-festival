@@ -36,7 +36,7 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  img,svg{ display:block; max-width:100%; }
+  img,svg{ display:block; max-width:100%; height: auto; }
   a{ color: inherit; }
   h1,h2,h3{ font-family: var(--font-display); margin:0; }
 
@@ -254,8 +254,8 @@
     position:relative;
     z-index: 3;
     display:grid;
-    grid-template-columns: 1.18fr 0.82fr;
-    gap: 24px;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 32px;
     align-items:center;
   }
 
@@ -360,7 +360,8 @@
   .truck-illustration {
     width: 100%;
     max-width: 440px;
-    margin-bottom: -45px;
+    height: auto;
+    margin-bottom: -15px;
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 12px 20px rgba(0,0,0,0.45));
@@ -385,6 +386,7 @@
     position: relative;
     z-index: 4;
     overflow: hidden;
+    margin-top: -35px;
     margin-left: 60px;
   }
   .plate .era{
@@ -745,7 +747,7 @@
     .hero p.lead { margin-left: auto; margin-right: auto; }
     .hero-actions { justify-content: center; }
     .hero-visual { min-height: auto; margin-top: 10px; }
-    .truck-illustration { max-width: 340px; margin-bottom: -35px; }
+    .truck-illustration { max-width: 360px; margin-bottom: -15px; }
     .plate{ width:205px; height:205px; margin: 0 auto; }
     .plate .date-band { font-size: 27px; }
     .about{ grid-template-columns: 1fr; }
@@ -851,8 +853,8 @@
     </div>
 
     <div class="hero-visual">
-      <!-- 差し替えた大迫力の消防車イラスト -->
-      <img src="image_1.png" alt="放水する大迫力のはしご消防車イラスト" class="truck-illustration">
+      <!-- 完全再配置・修正した大迫力の消防車イラスト -->
+      <img src="image_10.png" alt="放水する大迫力のはしご消防車イラスト" class="truck-illustration" style="display: block; visibility: visible; opacity: 1;">
 
       <div class="plate">
         <span class="era">令和8年</span>
@@ -1076,5 +1078,6 @@
 
 </body>
 </html>
+
 
 
