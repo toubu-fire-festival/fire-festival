@@ -35,6 +35,9 @@
     line-height: 1.8;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   img,svg{ display:block; max-width:100%; height: auto; }
   a{ color: inherit; }
@@ -48,32 +51,71 @@
 
   /* ---------- Cancellation Banner (初期状態は非表示: d-none を外すと表示されます) ---------- */
   .cancel-banner {
-    background: #B71C1C;
-    color: #fff;
-    padding: 14px 20px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 15px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    border-bottom: 3px solid var(--spark-yellow);
+    padding: 48px 20px;
+    background: radial-gradient(circle at 50% 30%, #2A1215 0%, var(--navy-deep) 100%);
   }
   .cancel-banner.d-none {
     display: none;
   }
-  .cancel-banner span.badge-cancel {
-    background: var(--spark-yellow);
-    color: #B71C1C;
-    padding: 2px 12px;
-    border-radius: 20px;
-    font-size: 13px;
+  .cancel-card {
+    background: #FFFFFF;
+    max-width: 640px;
+    width: 100%;
+    border-radius: 24px;
+    padding: 44px 32px;
+    text-align: center;
+    border: 5px solid #D31B0B;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  .cancel-card .badge-cancel {
+    display: inline-block;
+    background: #D31B0B;
+    color: #FFFFFF;
+    font-family: var(--font-display);
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 15px;
     font-weight: 900;
+    letter-spacing: 0.06em;
+    margin-bottom: 18px;
+  }
+  .cancel-card h1 {
+    font-size: clamp(24px, 4vw, 32px);
+    color: #B71C1C;
+    font-weight: 900;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+  .cancel-card p {
+    color: var(--ink);
+    font-size: 15.5px;
+    line-height: 1.85;
+    margin: 0 0 16px;
+    text-align: left;
+  }
+  .cancel-card .cancel-meta {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: #FFF5F5;
+    border: 1px solid #FEB2B2;
+    border-radius: 12px;
+    font-size: 14.5px;
+    color: #742A2A;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* ★ 中止バナー表示時は、通常コンテンツとナビをすべて非表示にする ★ */
+  body:has(.cancel-banner:not(.d-none)) section,
+  body:has(.cancel-banner:not(.d-none)) .info-band-wrapper,
+  body:has(.cancel-banner:not(.d-none)) .hazard-stripe-bottom,
+  body:has(.cancel-banner:not(.d-none)) header nav,
+  body:has(.cancel-banner:not(.d-none)) header .nav-cta {
+    display: none !important;
   }
 
   /* ---------- Rescue Stripe ---------- */
@@ -116,10 +158,6 @@
     color: #fff;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   }
-  body:not(:has(.cancel-banner.d-none)) header {
-    top: 54px; 
-  }
-
   .nav-inner{
     display:flex;
     align-items:center;
@@ -728,6 +766,7 @@
     color: #A0AEC0;
     padding: 44px 0 28px;
     font-size: 13.5px;
+    margin-top: auto;
   }
   footer .foot-top{
     display:flex;
@@ -764,6 +803,7 @@
     .hero-actions { flex-direction: column; width: 100%; }
     .btn-primary, .btn-secondary-cream { width: 100%; justify-content: center; }
     .cta-box { padding: 40px 24px; }
+    .cancel-card { padding: 32px 20px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -775,11 +815,6 @@
 </style>
 </head>
 <body>
-
-<div class="cancel-banner">
-  <span class="badge-cancel">重要なお知らせ</span>
-  <span>悪天候のため、本日の「東部消防ファイヤーフェスティバル」は中止となりました。</span>
-</div>
 
 <header>
   <div class="nav-inner">
@@ -808,11 +843,33 @@
         <li><a href="#access">アクセス・駐車場</a></li>
       </ul>
     </nav>
-    <a class="nav-cta" href="#apply">🚒 参加申込</a>
+    <a class="nav-cta" href="https://forms.gle/37juy3e6HWa2UMkQ8" target="_blank" rel="noopener">🚒 参加申込</a>
   </div>
 </header>
 
 <div class="hazard-stripe-top" aria-hidden="true"></div>
+
+<!-- ==========================================================================
+  【中止時の切り替え方法】
+  雨天等で中止となった場合は、下の行の `class="cancel-banner d-none"` から
+  ` d-none` を削除して `class="cancel-banner"` にしてください。
+  それだけで他のページ内容がすべて自動で非表示になり、この中止画面だけが表示されます。
+=========================================================================== -->
+<div class="cancel-banner d-none">
+  <div class="cancel-card">
+    <span class="badge-cancel">重要なお知らせ</span>
+    <h1>本日の「東部消防ファイヤーフェスティバル」は<br>開催中止となりました</h1>
+    <p>
+      令和8年12月20日(日)に開催を予定しておりました「東部消防ファイヤーフェスティバル」は、悪天候のため、ご来場される皆様の安全を考慮し<strong>【開催中止】</strong>とさせていただきます。
+    </p>
+    <p>
+      お申込みいただき開催を楽しみにしてくださっていた皆様には、大変ご迷惑をおかけいたしますことを心よりお詫び申し上げます。何卒ご理解のほどよろしくお願いいたします。
+    </p>
+    <div class="cancel-meta">
+      主催：東部消防職員共済会
+    </div>
+  </div>
+</div>
 
 <section class="hero">
   <div class="sparks" aria-hidden="true">
@@ -837,7 +894,7 @@
         大迫力の放水体験やかっこいい記念撮影など、子どもたちが主役になれる熱気いっぱいの1日を楽しもう！
       </p>
       <div class="hero-actions">
-        <a class="btn-primary" href="#apply">
+        <a class="btn-primary" href="https://forms.gle/37juy3e6HWa2UMkQ8" target="_blank" rel="noopener">
           <svg width="26" height="20" viewBox="0 0 64 48" fill="none" aria-hidden="true">
             <path d="M4 14C4 12.8954 4.89543 12 6 12H44L56 22V38H4V14Z" fill="#D31B0B"/>
             <path d="M43 16H50L54 22H43V16Z" fill="#90E0EF"/>
@@ -852,7 +909,6 @@
     </div>
 
     <div class="hero-visual">
-      <!-- 外部ファイル不要！イメージ図を再現した高精細・内蔵SVGイラスト -->
       <svg class="truck-illustration" viewBox="0 0 520 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="放水する大迫力のはしご消防車イラスト">
         <defs>
           <linearGradient id="bodyRed" x1="0" y1="0" x2="0" y2="1">
@@ -880,7 +936,6 @@
           </linearGradient>
         </defs>
 
-        <!-- 背景の花火エフェクト（右上・左上） -->
         <g stroke="#FFD200" stroke-width="2.2" stroke-linecap="round" opacity="0.9">
           <line x1="390" y1="15" x2="390" y2="65"/>
           <line x1="365" y1="40" x2="415" y2="40"/>
@@ -900,26 +955,19 @@
           <line x1="265" y1="23" x2="245" y2="43"/>
         </g>
 
-        <!-- 右下の白い煙・スチーム -->
         <path d="M350 245 C365 215 405 215 415 235 C435 215 475 225 475 255 C500 260 505 290 480 300 L340 300 Z" fill="url(#smokeGrad)"/>
 
-        <!-- 左側のダイナミックな水しぶき -->
         <path d="M135 160 C85 140 50 95 75 55 C85 40 105 55 95 80 C85 105 110 125 140 135 Z" fill="url(#waterSplash)" stroke="#2B1200" stroke-width="3"/>
         <path d="M120 205 C65 190 25 150 40 110 C50 90 70 105 65 125 C60 150 90 175 125 185 Z" fill="url(#waterSplash)" stroke="#2B1200" stroke-width="3"/>
         <circle cx="52" cy="75" r="9" fill="#E0F7FA" stroke="#2B1200" stroke-width="2.5"/>
         <circle cx="105" cy="40" r="7" fill="#E0F7FA" stroke="#2B1200" stroke-width="2.5"/>
         <circle cx="28" cy="145" r="7" fill="#90E0EF" stroke="#2B1200" stroke-width="2"/>
 
-        <!-- 右上へ伸びる立体的な白いはしご（トラス構造） -->
         <g transform="rotate(26 310 110)">
-          <!-- はしご奥面 -->
           <rect x="210" y="52" width="280" height="32" rx="3" fill="#CBD5E1" stroke="#2B1200" stroke-width="3"/>
-          <!-- トラス斜め材 -->
           <path d="M220 84 L240 52 L260 84 L280 52 L300 84 L320 52 L340 84 L360 52 L380 84 L400 52 L420 84 L440 52 L460 84 L480 52" fill="none" stroke="#475569" stroke-width="3.5" stroke-linejoin="round"/>
-          <!-- はしご手前面フレーム -->
           <rect x="210" y="44" width="280" height="8" rx="2" fill="#F8FAFC" stroke="#2B1200" stroke-width="3"/>
           <rect x="210" y="80" width="280" height="8" rx="2" fill="#F8FAFC" stroke="#2B1200" stroke-width="3"/>
-          <!-- 横桟 -->
           <line x1="235" y1="52" x2="235" y2="80" stroke="#2B1200" stroke-width="3"/>
           <line x1="265" y1="52" x2="265" y2="80" stroke="#2B1200" stroke-width="3"/>
           <line x1="295" y1="52" x2="295" y2="80" stroke="#2B1200" stroke-width="3"/>
@@ -930,18 +978,14 @@
           <line x1="445" y1="52" x2="445" y2="80" stroke="#2B1200" stroke-width="3"/>
         </g>
 
-        <!-- 車体下のドロップシャドウ -->
         <ellipse cx="255" cy="298" rx="145" ry="18" fill="rgba(0,0,0,0.45)"/>
 
-        <!-- 後輪タイヤ（奥） -->
         <g>
           <rect x="342" y="218" width="38" height="62" rx="14" fill="#1E293B" stroke="#2B1200" stroke-width="4"/>
           <ellipse cx="368" cy="249" rx="10" ry="18" fill="#CBD5E1" stroke="#2B1200" stroke-width="3"/>
         </g>
 
-        <!-- 消防車・後部ボディ（側面パネル・シャッター・大型ホースリール） -->
         <path d="M275 112 L385 128 L385 252 L275 268 Z" fill="url(#sideRed)" stroke="#2B1200" stroke-width="4" stroke-linejoin="round"/>
-        <!-- 上部ルーバー -->
         <rect x="292" y="128" width="78" height="22" rx="3" fill="#F1F5F9" stroke="#2B1200" stroke-width="3"/>
         <line x1="302" y1="128" x2="302" y2="150" stroke="#2B1200" stroke-width="2.5"/>
         <line x1="312" y1="128" x2="312" y2="150" stroke="#2B1200" stroke-width="2.5"/>
@@ -950,55 +994,42 @@
         <line x1="342" y1="128" x2="342" y2="150" stroke="#2B1200" stroke-width="2.5"/>
         <line x1="352" y1="128" x2="352" y2="150" stroke="#2B1200" stroke-width="2.5"/>
         <line x1="362" y1="128" x2="362" y2="150" stroke="#2B1200" stroke-width="2.5"/>
-        <!-- 機材パネル -->
         <rect x="292" y="160" width="28" height="58" rx="3" fill="#CBD5E1" stroke="#2B1200" stroke-width="3"/>
         <line x1="292" y1="175" x2="320" y2="175" stroke="#475569" stroke-width="2.5"/>
         <line x1="292" y1="190" x2="320" y2="190" stroke="#475569" stroke-width="2.5"/>
         <line x1="292" y1="205" x2="320" y2="205" stroke="#475569" stroke-width="2.5"/>
-        <!-- 円形ホースリール -->
         <circle cx="352" cy="192" r="24" fill="#1E293B" stroke="#2B1200" stroke-width="3.5"/>
         <circle cx="352" cy="192" r="16" fill="#B91C1C" stroke="#2B1200" stroke-width="2.5"/>
         <circle cx="352" cy="192" r="6" fill="#E2E8F0" stroke="#2B1200" stroke-width="2"/>
 
-        <!-- 左前輪タイヤ -->
         <rect x="122" y="236" width="42" height="56" rx="14" fill="#1E293B" stroke="#2B1200" stroke-width="4"/>
 
-        <!-- 消防車・フロントキャブ（正面〜斜め前の立体パース） -->
         <path d="M125 118 C125 102 138 94 156 94 H262 C278 94 288 104 288 120 V262 H115 V158 Z" fill="url(#bodyRed)" stroke="#2B1200" stroke-width="4.5" stroke-linejoin="round"/>
 
-        <!-- ルーフの赤色回転灯（サイレン） -->
         <rect x="168" y="77" width="76" height="17" rx="7" fill="#FF2A1A" stroke="#2B1200" stroke-width="3.5"/>
         <rect x="192" y="79" width="28" height="13" rx="3" fill="#FFE066" stroke="#2B1200" stroke-width="2.5"/>
-        <!-- サイレンの光芒 -->
         <line x1="155" y1="72" x2="142" y2="62" stroke="#FFD200" stroke-width="3" stroke-linecap="round"/>
         <line x1="257" y1="72" x2="270" y2="62" stroke="#FFD200" stroke-width="3" stroke-linecap="round"/>
 
-        <!-- サイドミラー（左右） -->
         <path d="M118 132 H98 V162 H112" fill="none" stroke="#2B1200" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         <rect x="89" y="136" width="14" height="24" rx="4" fill="#1E293B" stroke="#2B1200" stroke-width="3"/>
 
-        <!-- 大きなフロントガラス（水色ツヤ入り） -->
         <path d="M132 118 C134 108 142 104 154 104 H242 C252 104 258 110 258 120 V172 H125 Z" fill="url(#windshield)" stroke="#2B1200" stroke-width="4" stroke-linejoin="round"/>
-        <!-- ガラスの白いハイライト反射 -->
         <polygon points="148,110 172,110 145,165 130,165" fill="#FFFFFF" opacity="0.55"/>
         <polygon points="180,110 192,110 165,165 155,165" fill="#FFFFFF" opacity="0.35"/>
 
-        <!-- 助手席側のサイドウィンドウ -->
         <rect x="266" y="112" width="18" height="56" rx="4" fill="url(#windshield)" stroke="#2B1200" stroke-width="3.5"/>
 
-        <!-- フロントの白いV字ライン＆金色の消防章エンブレム -->
         <path d="M120 192 L192 212 L268 192" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
         <circle cx="192" cy="196" r="12" fill="#FFD200" stroke="#2B1200" stroke-width="3.5"/>
         <polygon points="192,187 195,193 201,193 196,197 198,203 192,199 186,203 188,197 183,193 189,193" fill="#B71508"/>
 
-        <!-- フロントグリル -->
         <rect x="162" y="218" width="60" height="26" rx="5" fill="#F1F5F9" stroke="#2B1200" stroke-width="3.5"/>
         <line x1="174" y1="218" x2="174" y2="244" stroke="#2B1200" stroke-width="3"/>
         <line x1="186" y1="218" x2="186" y2="244" stroke="#2B1200" stroke-width="3"/>
         <line x1="198" y1="218" x2="198" y2="244" stroke="#2B1200" stroke-width="3"/>
         <line x1="210" y1="218" x2="210" y2="244" stroke="#2B1200" stroke-width="3"/>
 
-        <!-- 丸型ヘッドライト＆ウインカー（左右） -->
         <circle cx="138" cy="222" r="13" fill="#FFF59D" stroke="#2B1200" stroke-width="3.5"/>
         <circle cx="138" cy="222" r="6" fill="#FFFFFF"/>
         <rect x="122" y="238" width="18" height="8" rx="3" fill="#FF9800" stroke="#2B1200" stroke-width="2.5"/>
@@ -1007,11 +1038,9 @@
         <circle cx="246" cy="222" r="6" fill="#FFFFFF"/>
         <rect x="244" y="238" width="18" height="8" rx="3" fill="#FF9800" stroke="#2B1200" stroke-width="2.5"/>
 
-        <!-- フロントバンパー -->
         <rect x="108" y="252" width="182" height="20" rx="8" fill="#E2E8F0" stroke="#2B1200" stroke-width="4"/>
         <rect x="174" y="255" width="36" height="14" rx="3" fill="#38BDF8" stroke="#2B1200" stroke-width="2.5"/>
 
-        <!-- 右前輪タイヤ（手前） -->
         <g>
           <rect x="258" y="226" width="48" height="72" rx="18" fill="#1E293B" stroke="#2B1200" stroke-width="4.5"/>
           <ellipse cx="288" cy="262" rx="12" ry="22" fill="#CBD5E1" stroke="#2B1200" stroke-width="3.5"/>
@@ -1241,6 +1270,7 @@
 
 </body>
 </html>
+
 
 
 
